@@ -1,0 +1,138 @@
+# Example Style Map for docx-converter
+#
+# This file demonstrates how to map DOCX paragraph and table styles to custom
+# HTML output configurations. Style IDs in DOCX files are mapped to transformation
+# rules that control how content is converted.
+#
+# Configuration Options:
+# - convertTo: Transform style to a different element type (e.g., 'list', 'blockquote', 'heading')
+# - className: CSS class(es) to apply to the output HTML element
+# - listType: Type of list when convertTo is 'list' (e.g., 'ul', 'ol')
+# - level: Heading level when convertTo is 'heading' (e.g., 1-6)
+#
+# Usage:
+#   ./bin/docx-converter convert document.docx -s examples/config/styles.yaml -o output.html
+
+# ==============================================================================
+# PARAGRAPH STYLES
+# ==============================================================================
+
+# Normal paragraph style - default text
+Normal:
+  className: paragraph
+
+# Heading styles - typically used for document structure
+Heading1:
+  convertTo: heading
+  level: 1
+  className: main-heading
+
+Heading2:
+  convertTo: heading
+  level: 2
+  className: sub-heading
+
+Heading3:
+  convertTo: heading
+  level: 3
+  className: section-heading
+
+Heading4:
+  convertTo: heading
+  level: 4
+  className: subsection-heading
+
+# Quote style - convert to blockquote element
+Quote:
+  convertTo: blockquote
+  className: pullquote
+
+# Intense Quote - styled blockquote variation
+IntenseQuote:
+  convertTo: blockquote
+  className: intense-quote
+
+# Subtitle style
+Subtitle:
+  className: subtitle
+
+# Title style
+Title:
+  className: document-title
+
+# ==============================================================================
+# LIST STYLES
+# ==============================================================================
+
+# Custom list paragraph styles - convert to HTML lists
+ListParagraph:
+  convertTo: list
+  listType: ul
+  className: standard-list
+
+# Numbered list style
+NumberedList:
+  convertTo: list
+  listType: ol
+  className: numbered-list
+
+# Custom bullet list
+BulletList:
+  convertTo: list
+  listType: ul
+  className: bullet-list
+
+# ==============================================================================
+# TABLE STYLES
+# ==============================================================================
+
+# Standard table grid
+TableGrid:
+  className: data-table
+
+# Table with striped rows
+TableGridLight:
+  className: data-table striped
+
+# Colorful table style
+TableColorful:
+  className: data-table colorful
+
+# Compact table style
+TableCompact:
+  className: data-table compact
+
+# Professional table
+TableProfessional:
+  className: data-table professional
+
+# ==============================================================================
+# SPECIAL STYLES
+# ==============================================================================
+
+# Code or preformatted text
+Code:
+  className: code-block
+
+# Emphasis styles
+Emphasis:
+  className: emphasized
+
+# Strong emphasis
+Strong:
+  className: strong-emphasis
+
+# Caption for figures/tables
+Caption:
+  className: caption
+
+# Footnote text
+FootnoteText:
+  className: footnote
+
+# Header and Footer
+Header:
+  className: header-text
+
+Footer:
+  className: footer-text
