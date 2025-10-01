@@ -33,17 +33,8 @@
 
 #### Immediate (This Week)
 
-- [ ] **Create CLI executable**
-  - File: `docx-converter/bin/docx-converter`
-  - Set up Symfony Console Application
-  - Register ConvertCommand and BatchCommand
-  - Make executable: `chmod +x`
+#### Immediate (This Week)
 
-- [ ] **Create example style map**
-  - File: `docx-converter/examples/config/styles.yaml`
-  - Include basic paragraph styles (Normal, Heading1, Heading2)
-  - Include conversion examples (Quote → blockquote)
-  - Include table styles
 
 #### Next Week
 
@@ -88,12 +79,33 @@
 
 ### Completed
 
+- [x] **Add debug output option to CLI** (2025-10-01)
+  - ✅ Added `--debug/-d` flag to ConvertCommand
+  - ✅ Wired debug flag through DocxConverter and HtmlTransformer
+  - ✅ Debug output shows style ID extraction and mapping info to STDERR
+  - ✅ Fixed style ID extraction - now properly calls `getStyleName()` on Paragraph style objects
+  - ✅ Style mapping now working correctly - verified with real DOCX files
+  - ✅ List items with `ListParagraph` style correctly converted to `<li>` with CSS classes
+  - ✅ Added support for `convertTo: list` and `convertTo: heading` in style maps
+
 - [x] **Update TransformerInterface signature** (2025-10-01)
   - ✅ Changed method signature to: `transform(array $sections): string`
   - ✅ Added comprehensive PHPDoc documentation for PHPWord Section array parameter
   - ✅ Updated HtmlTransformer to match new signature
   - ✅ Updated JsonTransformer to match new signature
   - ✅ Removed invalid Config class reference
+
+- [x] **Create CLI executable** (2025-10-01)
+  - ✅ Added CLI entry point at `docx-converter/bin/docx-converter`
+  - ✅ Set up Symfony Console Application
+  - ✅ Registered ConvertCommand and BatchCommand
+  - ✅ Made executable with `chmod +x`
+
+- [x] **Create example style map** (2025-10-01)
+  - ✅ Added example YAML style map at `docx-converter/examples/config/styles.yaml`
+  - ✅ Included basic paragraph styles (Normal, Heading1, Heading2)
+  - ✅ Included conversion example (Quote → blockquote)
+  - ✅ Included table style mapping
 
 - [x] **Verify DocxReader implementation** (2025-10-01)
   - ✅ Verified PHPWord IOFactory delegation working correctly

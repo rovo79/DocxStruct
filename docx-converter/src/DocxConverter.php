@@ -14,6 +14,7 @@ class DocxConverter
     private $transformationRules;
     private $reader;
     private $transformer;
+    private $debug = false;
 
     public function __construct()
     {
@@ -39,9 +40,15 @@ class DocxConverter
         return $this;
     }
 
+    public function withDebug(bool $debug = true): self
+    {
+        $this->debug = $debug;
+        return $this;
+    }
+
     public function toHtml(): string
     {
-        $this->transformer = new HtmlTransformer($this->styleMap, $this->transformationRules);
+        $this->transformer = new HtmlTransformer($this->styleMap, $this->transformationRules, $this->debug);
         $sections = $this->reader->getSections();
         return $this->transformer->transform($sections);
     }

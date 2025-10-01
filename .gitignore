@@ -2,3 +2,5 @@ docs/*.md
 vendor/*
 !docs/project_tracker.md
 
+*.html
+*.docx

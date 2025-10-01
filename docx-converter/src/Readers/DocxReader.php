@@ -3,6 +3,7 @@
 namespace DocxConverter\Readers;
 
 use PhpOffice\PhpWord\IOFactory;
+use PhpOffice\PhpWord\PhpWord;
 use InvalidArgumentException;
 use RuntimeException;
 

@@ -21,7 +21,8 @@ class ConvertCommand extends Command
             ->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'Output file path')
             ->addOption('format', 'f', InputOption::VALUE_REQUIRED, 'Output format (html, json)', 'html')
             ->addOption('style-map', 's', InputOption::VALUE_OPTIONAL, 'Path to YAML style mapping file')
-            ->addOption('config', 'c', InputOption::VALUE_OPTIONAL, 'Path to YAML configuration file');
+            ->addOption('config', 'c', InputOption::VALUE_OPTIONAL, 'Path to YAML configuration file')
+            ->addOption('debug', 'd', InputOption::VALUE_NONE, 'Enable debug output');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -32,18 +33,24 @@ class ConvertCommand extends Command
         $styleMapFile = $input->getOption('style-map');
         $configFile = $input->getOption('config');
 
-        $config = [];
+        // Load config if provided (currently only used for future extension)
         if ($configFile) {
             $configLoader = new ConfigLoader();
             $config = $configLoader->loadFromYaml($configFile);
+            // If config contains styleMap or transformationRules, apply them
         }
 
-        $converter = new DocxConverter($config);
+        $converter = new DocxConverter();
         $converter->loadDocument($inputFile);
 
         if ($styleMapFile) {
-            $styleMap = (new ConfigLoader())->loadFromYaml($styleMapFile);
+            $styleMapArr = (new ConfigLoader())->loadFromYaml($styleMapFile);
+            $styleMap = new \DocxConverter\Config\StyleMap($styleMapArr);
             $converter->withCustomStyleMap($styleMap);
+        }
+
+        if ($input->getOption('debug')) {
+            $converter->withDebug(true);
         }
 
         $result = match($format) {
