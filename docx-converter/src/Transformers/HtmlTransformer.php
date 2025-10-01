@@ -121,7 +121,8 @@ class HtmlTransformer implements TransformerInterface
         if ($fontStyle->isItalic()) {
             $content = "<em>{$content}</em>";
         }
-        if ($fontStyle->isUnderline()) {
+        // Check for underline style (getUnderline returns the underline type or null)
+        if ($fontStyle->getUnderline() !== null && $fontStyle->getUnderline() !== 'none') {
             $content = "<u>{$content}</u>";
         }
         
@@ -171,10 +172,10 @@ class HtmlTransformer implements TransformerInterface
         // Simple list item handling
         $html = "<li>";
         
-        foreach ($listItem->getElements() as $element) {
-            if ($element instanceof Text) {
-                $html .= htmlspecialchars($element->getText());
-            }
+        // ListItem has a single Text object accessible via getTextObject()
+        $textObject = $listItem->getTextObject();
+        if ($textObject instanceof Text) {
+            $html .= $this->formatInlineText($textObject);
         }
         
         $html .= "</li>\n";
