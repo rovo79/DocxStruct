@@ -1,0 +1,23 @@
+# GitHub Copilot Configuration
+# Configure which tools are enabled by default for Copilot agents
+
+# Enable or disable specific MCP (Model Context Protocol) tools/servers
+# Available tools may include: github, filesystem, browser, bash, etc.
+# Set to 'enabled' or 'disabled' to control default behavior
+
+tools:
+  # GitHub API tool - for repository operations
+  github:
+    enabled: true
+  
+  # Filesystem tool - for reading/writing files
+  filesystem:
+    enabled: true
+  
+  # Browser tool - for web browsing and screenshots
+  browser:
+    enabled: true
+  
+  # Bash tool - for running shell commands
+  bash:
+    enabled: true

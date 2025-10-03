@@ -128,6 +128,10 @@ composer dump-autoload
 3. Follow coding guidelines in [Technical Specification](docs/technical-specification.md)
 4. Reference [AI Coding Instructions](.github/copilot-instructions.md) for patterns
 
+### GitHub Copilot Configuration
+
+If you're using GitHub Copilot to work on this project, see [GitHub Copilot Tools Configuration](docs/copilot-tools-configuration.md) to learn how to configure which tools are enabled by default.
+
 ## License
 
 [Add license information]
