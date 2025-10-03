@@ -1,4 +1,5 @@
 docs/*.md
 vendor/*
 !docs/project_tracker.md
+!docs/copilot-tools-configuration.md
 
