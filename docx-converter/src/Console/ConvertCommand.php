@@ -21,7 +21,8 @@ class ConvertCommand extends Command
             ->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'Output file path')
             ->addOption('format', 'f', InputOption::VALUE_REQUIRED, 'Output format (html, json)', 'html')
             ->addOption('style-map', 's', InputOption::VALUE_OPTIONAL, 'Path to YAML style mapping file')
-            ->addOption('config', 'c', InputOption::VALUE_OPTIONAL, 'Path to YAML configuration file');
+            ->addOption('config', 'c', InputOption::VALUE_OPTIONAL, 'Path to YAML configuration file')
+            ->addOption('assets-dir', 'a', InputOption::VALUE_REQUIRED, 'Directory to extract images and other assets');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -31,6 +32,7 @@ class ConvertCommand extends Command
         $format = $input->getOption('format');
         $styleMapFile = $input->getOption('style-map');
         $configFile = $input->getOption('config');
+        $assetsDir = $input->getOption('assets-dir');
 
         $config = [];
         if ($configFile) {
@@ -46,6 +48,16 @@ class ConvertCommand extends Command
             $converter->withCustomStyleMap($styleMap);
         }
 
+        // Configure assets directory if provided
+        if ($assetsDir) {
+            $converter->withAssetsDir($assetsDir);
+            
+            // Set output file path for relative path computation
+            if ($outputFile) {
+                $converter->setOutputFilePath($outputFile);
+            }
+        }
+
         $result = match($format) {
             'html' => $converter->toHtml(),
             'json' => $converter->toJson(),
@@ -55,6 +67,9 @@ class ConvertCommand extends Command
         if ($outputFile) {
             file_put_contents($outputFile, $result);
             $output->writeln("Conversion complete. Output saved to: {$outputFile}");
+            if ($assetsDir) {
+                $output->writeln("Assets extracted to: {$assetsDir}");
+            }
         } else {
             $output->write($result);
         }
