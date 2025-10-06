@@ -4,9 +4,11 @@ A PHP library that transforms DOCX documents into clean, semantic HTML or JSON. 
 
 ## Key Features
 
+- **Document Inspection**: Discover all style IDs in a DOCX file before conversion
 - **Style-Based Transformation**: Map DOCX paragraph styles to custom HTML elements (e.g., Quote → blockquote)
+- **Nested List Support**: Automatically detects and creates proper HTML5 nested lists
 - **Clean Output**: Semantic HTML with CSS classes, not inline styles
-- **CLI Tools**: Command-line interface for single-file and batch conversion
+- **CLI Tools**: Command-line interface for inspection, single-file and batch conversion
 - **YAML Configuration**: Flexible style mapping and transformation rules
 - **Leverages PHPWord**: Uses PHPWord's robust DOCX parsing, adds transformation layer
 
@@ -15,6 +17,12 @@ A PHP library that transforms DOCX documents into clean, semantic HTML or JSON. 
 ```bash
 # Install dependencies
 composer install
+
+# Inspect a DOCX file to see all style IDs
+./docx-converter/bin/docx-converter inspect document.docx
+
+# Export style IDs to a YAML template (auto-generates starter config)
+./docx-converter/bin/docx-converter inspect document.docx --export styles.yaml
 
 # Convert a DOCX file to HTML
 ./docx-converter/bin/docx-converter convert document.docx -o output.html
@@ -67,6 +75,44 @@ chmod +x docx-converter/bin/docx-converter
 
 ## Usage Examples
 
+### Inspect Document Styles
+
+Before converting, inspect a DOCX file to see what style IDs it contains:
+
+```bash
+# Basic inspection - shows all style IDs and usage counts
+./docx-converter/bin/docx-converter inspect document.docx
+
+# Detailed inspection - includes text previews and locations
+./docx-converter/bin/docx-converter inspect document.docx --detailed
+
+# Export to YAML template - auto-generates a starter styles.yaml file
+./docx-converter/bin/docx-converter inspect document.docx --export styles.yaml
+```
+
+Example output:
+
+```text
+Style IDs Found:
++------------------+-------+---------+
+| Style ID         | Count | Used In |
++------------------+-------+---------+
+| ListParagraph    | 22    | TextRun |
+| ListParagraph2   | 8     | TextRun |
+| NormalBeforeList | 5     | TextRun |
+| Heading1         | 3     | Title   |
++------------------+-------+---------+
+```
+
+Use this information to create your `styles.yaml` mapping file, or use `--export` to auto-generate a starter template with intelligent defaults.
+
+The `--export` option automatically:
+
+- Detects list-related styles and suggests `convertTo: list` with appropriate `listType`
+- Detects quote styles and suggests `convertTo: blockquote`
+- Converts style IDs to kebab-case CSS class names
+- Adds usage comments showing how often each style appears
+
 ### Basic Conversion
 
 ```php
@@ -108,6 +154,23 @@ $html = $converter->loadDocument('input.docx')
 
 ./docx-converter/bin/docx-converter batch --config batch-config.yaml
 ```
+
+### Assets extraction (images)
+
+When converting DOCX files that contain images, you can instruct the converter to extract embedded media into a local assets directory. The CLI `convert` command accepts an `--assets-dir` option. When provided, images referenced in the DOCX will be extracted into the directory and the generated HTML will reference the extracted files.
+
+Example:
+
+```bash
+./docx-converter/bin/docx-converter convert document.docx -o output.html --assets-dir output-assets
+```
+
+Notes:
+- Extraction attempts to read media from the DOCX package and write files into the chosen directory.
+- Files are saved using a content-hash filename to avoid duplicates.
+- If no assets dir is provided, images will be left as their original source path (if any).
+
+
 
 ## Development
 

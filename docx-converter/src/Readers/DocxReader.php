@@ -10,6 +10,7 @@ use RuntimeException;
 class DocxReader
 {
     private $phpWord;
+    private $sourcePath;
 
     /**
      * Load a DOCX document using PHPWord's IOFactory
@@ -20,6 +21,7 @@ class DocxReader
      */
     public function __construct(string $filePath)
     {
+        $this->sourcePath = $filePath;
         // Validate file existence
         if (!file_exists($filePath)) {
             throw new InvalidArgumentException("DOCX file not found: {$filePath}");
@@ -50,6 +52,16 @@ class DocxReader
     public function getDocument()
     {
         return $this->phpWord;
+    }
+
+    /**
+     * Get original DOCX source path provided to the reader
+     *
+     * @return string
+     */
+    public function getSourcePath(): string
+    {
+        return $this->sourcePath;
     }
 
     /**

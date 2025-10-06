@@ -15,6 +15,7 @@ class DocxConverter
     private $reader;
     private $transformer;
     private $debug = false;
+    private $assetsDir = '';
 
     public function __construct()
     {
@@ -46,9 +47,15 @@ class DocxConverter
         return $this;
     }
 
+    public function withAssetsDir(string $assetsDir): self
+    {
+        $this->assetsDir = $assetsDir;
+        return $this;
+    }
+
     public function toHtml(): string
     {
-        $this->transformer = new HtmlTransformer($this->styleMap, $this->transformationRules, $this->debug);
+        $this->transformer = new HtmlTransformer($this->styleMap, $this->transformationRules, $this->debug, $this->reader, $this->assetsDir);
         $sections = $this->reader->getSections();
         return $this->transformer->transform($sections);
     }

@@ -21,6 +21,7 @@ class ConvertCommand extends Command
             ->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'Output file path')
             ->addOption('format', 'f', InputOption::VALUE_REQUIRED, 'Output format (html, json)', 'html')
             ->addOption('style-map', 's', InputOption::VALUE_OPTIONAL, 'Path to YAML style mapping file')
+            ->addOption('assets-dir', null, InputOption::VALUE_OPTIONAL, 'Directory to extract images and assets to')
             ->addOption('config', 'c', InputOption::VALUE_OPTIONAL, 'Path to YAML configuration file')
             ->addOption('debug', 'd', InputOption::VALUE_NONE, 'Enable debug output');
     }
@@ -42,6 +43,10 @@ class ConvertCommand extends Command
 
         $converter = new DocxConverter();
         $converter->loadDocument($inputFile);
+
+        if ($input->getOption('assets-dir')) {
+            $converter->withAssetsDir($input->getOption('assets-dir'));
+        }
 
         if ($styleMapFile) {
             $styleMapArr = (new ConfigLoader())->loadFromYaml($styleMapFile);

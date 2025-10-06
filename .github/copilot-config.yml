@@ -1,0 +1,16 @@
+tools:
+  # GitHub API tool - for repository operations
+  github:
+    enabled: true
+  
+  # Filesystem tool - for reading/writing files
+  filesystem:
+    enabled: true
+  
+  # Browser tool - for web browsing and screenshots
+  browser:
+    enabled: true
+  
+  # Bash tool - for running shell commands
+  bash:
+    enabled: true

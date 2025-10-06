@@ -1,0 +1,70 @@
+# Style Mapping Configuration
+# Generated from inspection
+# Customize the settings below for your conversion needs
+
+CellLeft:
+  className: cell-left
+  # Used 1 time(s) in: Table
+
+CellRight:
+  className: cell-right
+  # Used 1 time(s) in: Table
+
+CommentText:
+  className: comment-text
+  # Used 1 time(s) in: TextRun
+
+FirstParagraph:
+  className: first-paragraph
+  # Used 1 time(s) in: TextRun
+
+Heading1:
+  className: heading1
+  # Used 3 time(s) in: Title
+
+ListParagraph:
+  convertTo: list
+  className: list-paragraph
+  listType: ul
+  # Used 22 time(s) in: TextRun
+
+ListParagraph2:
+  convertTo: list
+  className: list-paragraph2
+  listType: ul
+  # Used 8 time(s) in: TextRun
+
+MBRDate:
+  className: mbrdate
+  # Used 1 time(s) in: Table
+
+MBRTitle:
+  className: mbrtitle
+  # Used 1 time(s) in: Table
+
+NormalBeforeList:
+  convertTo: list
+  className: normal-before-list
+  listType: ul
+  # Used 5 time(s) in: TextRun
+
+TableFootnote:
+  className: table-footnote
+  # Used 2 time(s) in: Table
+
+TableGrid:
+  className: table-grid
+  # Used 2 time(s) in: Table
+
+TableGrid1:
+  className: table-grid1
+  # Used 3 time(s) in: Table
+
+TableNote:
+  className: table-note
+  # Used 2 time(s) in: Table
+
+Temp2ndgraph:
+  className: temp2ndgraph
+  # Used 2 time(s) in: TextRun
+
