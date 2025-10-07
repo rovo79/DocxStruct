@@ -4,21 +4,36 @@ namespace DocxConverter\Transformers;
 
 use DocxConverter\Config\StyleMap;
 use DocxConverter\Config\TransformationRules;
+use DocxConverter\Utils\ImageExtractor;
 use PhpOffice\PhpWord\Element\Section;
 use PhpOffice\PhpWord\Element\TextRun;
 use PhpOffice\PhpWord\Element\Text;
 use PhpOffice\PhpWord\Element\Table;
 use PhpOffice\PhpWord\Element\ListItem;
+use PhpOffice\PhpWord\Element\Image;
 
 class HtmlTransformer implements TransformerInterface
 {
     private StyleMap $styleMap;
     private TransformationRules $transformationRules;
+    private ?ImageExtractor $imageExtractor = null;
 
     public function __construct(StyleMap $styleMap, TransformationRules $transformationRules)
     {
         $this->styleMap = $styleMap;
         $this->transformationRules = $transformationRules;
+    }
+
+    /**
+     * Set the image extractor for handling images.
+     *
+     * @param ImageExtractor $imageExtractor
+     * @return self
+     */
+    public function setImageExtractor(ImageExtractor $imageExtractor): self
+    {
+        $this->imageExtractor = $imageExtractor;
+        return $this;
     }
 
     /**
@@ -88,10 +103,12 @@ class HtmlTransformer implements TransformerInterface
         
         $html = "<p{$attributes}>";
         
-        // Process inline elements (text with formatting)
+        // Process inline elements (text with formatting and images)
         foreach ($textRun->getElements() as $element) {
             if ($element instanceof Text) {
                 $html .= $this->formatInlineText($element);
+            } elseif ($element instanceof Image) {
+                $html .= $this->transformImage($element);
             }
         }
         
@@ -202,5 +219,47 @@ class HtmlTransformer implements TransformerInterface
             'div' => "<div{$classAttr}>{$content}</div>\n",
             default => "<p{$classAttr}>{$content}</p>\n"
         };
+    }
+
+    /**
+     * Transform a PHPWord Image element to HTML.
+     *
+     * @param Image $image
+     * @return string HTML img tag
+     */
+    private function transformImage(Image $image): string
+    {
+        // Get image source
+        $source = $image->getSource();
+        
+        // Use ImageExtractor if available
+        if ($this->imageExtractor !== null) {
+            $extractedPath = $this->imageExtractor->extract($source);
+            if ($extractedPath !== null) {
+                $source = $extractedPath;
+            }
+        }
+        
+        // Get image style for width/height
+        $style = $image->getStyle();
+        $attributes = '';
+        
+        if ($style !== null) {
+            $width = $style->getWidth();
+            $height = $style->getHeight();
+            
+            if ($width !== null) {
+                $attributes .= ' width="' . htmlspecialchars((string)$width) . '"';
+            }
+            if ($height !== null) {
+                $attributes .= ' height="' . htmlspecialchars((string)$height) . '"';
+            }
+        }
+        
+        // Get image name/alt text if available
+        $name = $image->getName();
+        $altText = $name ? htmlspecialchars($name) : '';
+        
+        return '<img src="' . htmlspecialchars($source) . '" alt="' . $altText . '"' . $attributes . '>';
     }
 }

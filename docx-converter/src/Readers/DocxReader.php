@@ -9,6 +9,7 @@ use RuntimeException;
 class DocxReader
 {
     private $phpWord;
+    private $filePath;
 
     /**
      * Load a DOCX document using PHPWord's IOFactory
@@ -29,6 +30,8 @@ class DocxReader
             throw new InvalidArgumentException("DOCX file is not readable: {$filePath}");
         }
 
+        $this->filePath = $filePath;
+
         // Load document using PHPWord's IOFactory
         try {
             $this->phpWord = IOFactory::load($filePath);
@@ -39,6 +42,16 @@ class DocxReader
                 $e
             );
         }
+    }
+
+    /**
+     * Get the file path of the loaded DOCX document
+     * 
+     * @return string
+     */
+    public function getFilePath(): string
+    {
+        return $this->filePath;
     }
 
     /**

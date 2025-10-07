@@ -1,5 +1,6 @@
 docs/*.md
 vendor/*
+.phpunit.cache/
 !docs/project_tracker.md
 !docs/copilot-tools-configuration.md
 
